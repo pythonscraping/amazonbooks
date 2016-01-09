@@ -1,3 +1,4 @@
+#Get All the links from the new releases page.
 import scrapy
 from amazonbooks.items import HotRelease
 

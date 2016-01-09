@@ -1,3 +1,4 @@
+#Get all the comments information from a particular book.
 import scrapy
 from amazonbooks.items import HotRelease
 
