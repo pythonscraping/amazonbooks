@@ -21,6 +21,7 @@ class Book(scrapy.Item):
     isbn13 = scrapy.Field()
     dimensions = scrapy.Field()
     bestsellerrank = scrapy.Field()
+    average = scrapy.Field()
 
 class HotRelease(scrapy.Item):
     url = scrapy.Field()
