@@ -9,18 +9,18 @@
 import scrapy
 
 class Book(scrapy.Item):
-	url = scrapy.Field()
-	kindle 	   = scrapy.Field()
-	hardcover  = scrapy.Field()
-	paperback  = scrapy.Field()
-	massmarketpaperback = scrapy.Field()
-	description = scrapy.Field()
-	listprice = scrapy.Field()
-	publisher = scrapy.Field()
-	isbn10 = scrapy.Field()
-	isbn13 = scrapy.Field()
-	dimensions = scrapy.Field()
-	bestsellerrank = scrapy.Field()
+    url = scrapy.Field()
+    kindle 	   = scrapy.Field()
+    hardcover  = scrapy.Field()
+    paperback  = scrapy.Field()
+    massmarketpaperback = scrapy.Field()
+    description = scrapy.Field()
+    listprice = scrapy.Field()
+    publisher = scrapy.Field()
+    isbn10 = scrapy.Field()
+    isbn13 = scrapy.Field()
+    dimensions = scrapy.Field()
+    bestsellerrank = scrapy.Field()
 
 class HotRelease(scrapy.Item):
     url = scrapy.Field()
