@@ -79,6 +79,12 @@ class AmazonSpider(scrapy.Spider):
         except IndexError:
             item['dimensions'] = 'null'
 
+        #Average rating
+        try:
+            averagestr = str(response.xpath(".//span[contains(@class,'s_star_')]/@title").extract()[0]).split("out")[0]
+            item['average'] = strToFloat(averagestr)
+        except IndexError:
+            item['average'] = "no average"
 
         #bestsellerrank
         bestsellerrankdirty = response.xpath(".//b[contains(text(),'Amazon Best Sellers Rank')]/../text()").extract()
