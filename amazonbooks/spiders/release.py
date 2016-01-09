@@ -17,11 +17,11 @@ class ReleaseSpider(scrapy.Spider):
     ]
     def parse(self, response):
         item = HotRelease()
-        for link in response.xpath(".//*[@id='zg_centerListWrapper']//div/div[2]/div[2]/a/@href"):
-            url = link.extract().strip()
-            item['url'] = url
+        for link in response.xpath(".//*[@id='zg_centerListWrapper']//div/div[2]/div[2]/a"):
+            url = link.xpath("./@href").extract()[0].strip()
+            item['url'] = str(url)
             item['asin'] = getasinfromurl(str(url))
-            for date in response.xpath(".//*[@id='zg_centerListWrapper']//div/div[2]/div[5]/text()"):
-                item['releaseDate'] = date.extract().strip()
-                yield item
+            date = link.xpath("../../../div[2]/div[5]/text()")
+            item['releaseDate'] = date.extract()[0].strip()
+            yield item
         #pass
