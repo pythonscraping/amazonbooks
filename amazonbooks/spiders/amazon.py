@@ -1314,6 +1314,6 @@ class AmazonSpider(scrapy.Spider):
         #bestsellerrank
         bestsellerrankdirty = response.xpath(".//b[contains(text(),'Amazon Best')]/../text()").extract()
         bestsellerrankstring = str("".join(bestsellerrankdirty))
-        item['bestsellerrank'] = int(filter(str.isdigit, bestsellerrankstring)) # We get only the number information
+        #item['bestsellerrank'] = int(filter(str.isdigit, bestsellerrankstring)) # We get only the number information
         #print "Result:", bestsellerrank
         yield item
