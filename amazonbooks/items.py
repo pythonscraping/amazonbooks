@@ -23,6 +23,8 @@ class Book(scrapy.Item):
     bestsellerrank = scrapy.Field()
     average = scrapy.Field()
     asin = scrapy.Field()
+    haseditorialreview = scrapy.Field()
+    alsobought = scrapy.Field()
 
 class HotRelease(scrapy.Item):
     url = scrapy.Field()

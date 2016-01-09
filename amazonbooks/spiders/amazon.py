@@ -32,8 +32,7 @@ def getprice (type,value,book):
 class AmazonSpider(scrapy.Spider):
     name = "amazons"
     allowed_domains = ["amazon.com"]
-    start_urls = ["http://www.amazon.com/Firelight-Amulet-7-Kazu-Kibuishi/dp/0545433169",
-                  "http://www.amazon.com/gp/product/0756607647/"]
+    start_urls = ["http://www.amazon.com/When-Breath-Becomes-Paul-Kalanithi/dp/081298840X/"]
 
     def parse(self, response):
 
@@ -64,6 +63,8 @@ class AmazonSpider(scrapy.Spider):
             priceType = price.xpath('./td[@class="dp-title-col"]/*[@class="title-text"]/span/text()').extract()[0].strip()
             priceValue = strToFloat(price.xpath('./td[@class="a-text-right dp-price-col"]//span/text()').extract()[0].strip())
             getprice(priceType,priceValue ,item)
+
+        #General Information
         try:
             item['publisher'] = str(response.xpath(".//b[contains(text(),'Publisher')]/../text()").extract()[0]).strip()
         except IndexError:
@@ -90,6 +91,28 @@ class AmazonSpider(scrapy.Spider):
             item['average'] = strToFloat(averagestr)
         except IndexError:
             item['average'] = "no average"
+
+        #Editorial review
+        editorialh2 = response.xpath(".//h2[contains(text(),'Editorial Review')]/text()").extract()
+        if (len(editorialh2) > 0):
+            item['haseditorialreview'] = 1
+        else:
+            item['haseditorialreview'] = 0
+
+        #Also bought (needs to cover additional cases)
+        listoflinks = response.xpath(".//*[@id='purchase-sims-feature']//@href")
+        listofasintemp = []
+        listofasin = []
+        for link in listoflinks:
+            if bool(re.search("/([0-9]{10})(?:[/?]|$)",str(link.extract()))):
+                linktemp = re.search("/([0-9]{10})(?:[/?]|$)",str(link.extract())).group(0)
+                listofasintemp.append(int(filter(str.isdigit,str(linktemp))))
+            else:
+                pass #it is false
+        listofasin = list(set(listofasintemp))
+        item['alsobought'] = listofasin
+
+
 
         #bestsellerrank
         bestsellerrankdirty = response.xpath(".//b[contains(text(),'Amazon Best Sellers Rank')]/../text()").extract()
