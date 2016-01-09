@@ -23,13 +23,15 @@ class Book(scrapy.Item):
 	bestsellerrank = scrapy.Field()
 
 class HotRelease(scrapy.Item):
-	url = scrapy.Field()
-	releaseDate = scrapy.Field()
-	rank = scrapy.Field()
+    url = scrapy.Field()
+    releaseDate = scrapy.Field()
+    rank = scrapy.Field()
+    asin = scrapy.Field()
+
 
 class LastRelease(scrapy.Item):
-	url = scrapy.Field()
-	releaseDate = scrapy.Field()
-	ASIN = scrapy.Field()
-	rank = scrapy.Field()
-	crawlDate = scrapy.Field()
+    url = scrapy.Field()
+    releaseDate = scrapy.Field()
+    ASIN = scrapy.Field()
+    rank = scrapy.Field()
+    crawlDate = scrapy.Field()

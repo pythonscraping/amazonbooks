@@ -3,6 +3,9 @@ import scrapy
 from amazonbooks.items import HotRelease
 
 
+def getasinfromurl(url):
+    return url.split("/dp/")[1]
+
 class ReleaseSpider(scrapy.Spider):
     name = "releases"
     allowed_domains = ["amazon.com"]
@@ -13,10 +16,12 @@ class ReleaseSpider(scrapy.Spider):
         "http://www.amazon.com/gp/new-releases/books/ref=zg_bsnr_books_pg_4?ie=UTF8&pg=4"
     ]
     def parse(self, response):
-		item = HotRelease()
-		for link in response.xpath(".//*[@id='zg_centerListWrapper']//div/div[2]/div[2]/a/@href"):
-			item['url'] = link.extract().strip()
-			for date in response.xpath(".//*[@id='zg_centerListWrapper']//div/div[2]/div[5]/text()"):
-				item['releaseDate'] = date.extract().strip()
-				yield item
-		#pass
+        item = HotRelease()
+        for link in response.xpath(".//*[@id='zg_centerListWrapper']//div/div[2]/div[2]/a/@href"):
+            url = link.extract().strip()
+            item['url'] = url
+            item['asin'] = getasinfromurl(str(url))
+            for date in response.xpath(".//*[@id='zg_centerListWrapper']//div/div[2]/div[5]/text()"):
+                item['releaseDate'] = date.extract().strip()
+                yield item
+        #pass

@@ -1,3 +1,4 @@
+#Get links from the 100 pages of the advanced search.
 import scrapy
 from amazonbooks.items import LastRelease
 
