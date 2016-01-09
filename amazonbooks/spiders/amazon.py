@@ -40,6 +40,8 @@ class AmazonSpider(scrapy.Spider):
         item = Book()
 
         item['url'] = response.url
+
+        #Get asin from url
         asinregex = re.search("/([a-zA-Z0-9]{10})(?:[/?]|$)",str(response.url)).group(0)
         item['asin'] = int(filter(str.isdigit,asinregex))
 
