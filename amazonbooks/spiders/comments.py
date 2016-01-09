@@ -7,7 +7,7 @@ class ReleaseSpider(scrapy.Spider):
     name = "comments"
     allowed_domains = ["amazon.com"]
     start_urls = [
-        "http://www.amazon.com/product-reviews/0425277747/ref=cm_cr_pr_btm_link_2?pageNumber=2"
+        "http://www.amazon.com/product-reviews/1607747308/ref=cm_cr_pr_btm_link_1?pageNumber=1"
     ]  
 
     def parse(self, response):
