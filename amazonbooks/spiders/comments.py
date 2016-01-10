@@ -1,48 +1,62 @@
 #Get all the comments information from a particular book.
 import scrapy
-from amazonbooks.items import HotRelease
+from amazonbooks.items import Review
 
 
 class ReleaseSpider(scrapy.Spider):
-    name = "comments"
+    name = "reviews"
     allowed_domains = ["amazon.com"]
     start_urls = [
+        #Beware this one has 721 pages...
         "http://www.amazon.com/product-reviews/1607747308/ref=cm_cr_pr_btm_link_1?pageNumber=1"
     ]  
 
     def parse(self, response):
-        for comments in response.xpath(".//*[@id='cm_cr-review_list']//div") :
-            comment = comments.xpath("./div[5]/span[contains(@class,'review-text')]/text()").extract()
-            date = comments.xpath("./div[3]/span[contains(@class,'review-date')]/text()").extract()
-            author = comments.xpath("div[3]/span[1]/a[contains(@class,'author')]/text()").extract()
-            authorLink = comments.xpath("div[3]/span[1]/a[contains(@class,'author')]/@href").extract()
+        item = Review()
+        pagecount = int(response.url.split("pageNumber=")[1])
+        #for comments in response.xpath(".//*[@id='cm_cr-review_list']//div") :
+        for reviewcount,comments in enumerate(response.xpath(".//span[contains(@class,'review-text')]")) :
+            item['review'] = ''.join(comments.xpath(".//text()").extract()).encode("utf8")
+            try:
+                item['date'] = comments.xpath(".//../..//span[contains(@class,'review-date')]/text()").extract()[0].encode("utf8")
+            except IndexError:
+                pass
+            try:
+                item['reviewer'] = comments.xpath(".//../..//a[contains(@class,'author')]/text()").extract()[0].encode("utf8")
+                item['reviewerurl'] = comments.xpath(".//../..//a[contains(@class,'author')]/@href").extract()[0].encode("utf8")
+            except IndexError:
+                pass
+
             #Compute the rating of the book by the presence of the css clas "a-star-rating"
-            if "a-star-5" in comments.extract() :
+            head = comments.xpath(".//../..//i[contains(@class,'a-star-')]/@class").extract()[0].encode("utf8")
+            if "a-star-5" in head:
                 grade = 5
-            elif "a-star-4" in comments.extract():
+            elif "a-star-4" in head :
                 grade = 4
-            elif "a-star-3" in comments.extract() :
+            elif "a-star-3" in head  :
                 grade = 3
-            elif "a-star-2" in comments.extract() :
+            elif "a-star-2" in head :
                 grade = 2
-            elif "a-star-1" in comments.extract() :
+            elif "a-star-1" in head :
                 grade = 1
             else :
                 grade = "error"
 
+            item['rating'] = grade
+            item ['indexcount'] = pagecount * reviewcount
+            item['id'] = comments.xpath(".//../../@id").extract()[0].encode("utf8")
+            item['title'] = comments.xpath(".//../..//a[contains(@class,'a-text-bold')]/text()").extract()[0].encode("utf8")
             #Is it a verified purchase ?
-            if "Verified Purchase" in comments.extract() :
+            if "Verified Purchase" in comments.xpath(".//../..").extract()[0]:
                 verified = 1
             else :
                 verified = 0
+            item ['verified'] = verified
+            yield item
 
-            if comment :
-                print "-------------"
-                print comment
-                print date
-                print author
-                print authorLink
-                print grade
-                print verified
-
-        #yield scrapy.Request('http://www.amazon.com/product-reviews/1250066115/ref=cm_cr_pr_btm_link_1?pageNumber=1')
+        try :
+            nextlink = "http://www.amazon.com" + response.xpath(".//li[contains(@class,'a-last')]/a/@href").extract()[0]
+            print nextlink
+            yield scrapy.Request(nextlink)
+        except IndexError:
+            print "We stop here"

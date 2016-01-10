@@ -40,3 +40,16 @@ class LastRelease(scrapy.Item):
     ASIN = scrapy.Field()
     rank = scrapy.Field()
     crawlDate = scrapy.Field()
+
+class Review(scrapy.Item):
+    review = scrapy.Field()
+    title = scrapy.Field()
+    date = scrapy.Field()
+    author = scrapy.Field()
+    authorLink = scrapy.Field()
+    rating = scrapy.Field()
+    verified = scrapy.Field()
+    reviewer = scrapy.Field()
+    reviewerurl = scrapy.Field()
+    id = scrapy.Field()
+    indexcount = scrapy.Field() #the lowest the highest the comment.
