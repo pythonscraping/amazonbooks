@@ -53,3 +53,5 @@ class Review(scrapy.Item):
     reviewerurl = scrapy.Field()
     id = scrapy.Field()
     indexcount = scrapy.Field() #the lowest the highest the comment.
+    helpful = scrapy.Field()
+    total = scrapy.Field()

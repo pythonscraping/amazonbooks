@@ -45,6 +45,18 @@ class ReleaseSpider(scrapy.Spider):
             item['rating'] = grade
             item ['indexcount'] = pagecount * reviewcount
             item['id'] = comments.xpath(".//../../@id").extract()[0].encode("utf8")
+
+            #Hepfulness of review
+            try :
+                helpfulspan = comments.xpath(".//../..//span[contains(.,'review helpful')]/text()").extract()[0].encode("utf8")
+                helpful = helpfulspan.split("of")[0].strip()
+                total = helpfulspan.split("of")[1].split("people")[0].strip()
+                item['helpful'] = int(filter(str.isdigit,helpful))
+                item['total'] = int(filter(str.isdigit,total))
+            except IndexError:
+                pass
+
+
             item['title'] = comments.xpath(".//../..//a[contains(@class,'a-text-bold')]/text()").extract()[0].encode("utf8")
             #Is it a verified purchase ?
             if "Verified Purchase" in comments.xpath(".//../..").extract()[0]:
@@ -53,10 +65,11 @@ class ReleaseSpider(scrapy.Spider):
                 verified = 0
             item ['verified'] = verified
             yield item
-
+"""
         try :
             nextlink = "http://www.amazon.com" + response.xpath(".//li[contains(@class,'a-last')]/a/@href").extract()[0]
             print nextlink
             yield scrapy.Request(nextlink)
         except IndexError:
             print "We stop here"
+"""
