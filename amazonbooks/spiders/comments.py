@@ -16,19 +16,20 @@ class ReleaseSpider(scrapy.Spider):
         pagecount = int(response.url.split("pageNumber=")[1])
         #for comments in response.xpath(".//*[@id='cm_cr-review_list']//div") :
         for reviewcount,comments in enumerate(response.xpath(".//span[contains(@class,'review-text')]")) :
+            reviewdiv = comments.xpath(".//../..")
             item['review'] = ''.join(comments.xpath(".//text()").extract()).encode("utf8")
             try:
-                item['date'] = comments.xpath(".//../..//span[contains(@class,'review-date')]/text()").extract()[0].encode("utf8")
+                item['date'] = reviewdiv.xpath(".//span[contains(@class,'review-date')]/text()").extract()[0].encode("utf8")
             except IndexError:
                 pass
             try:
-                item['reviewer'] = comments.xpath(".//../..//a[contains(@class,'author')]/text()").extract()[0].encode("utf8")
-                item['reviewerurl'] = comments.xpath(".//../..//a[contains(@class,'author')]/@href").extract()[0].encode("utf8")
+                item['reviewer'] = reviewdiv.xpath(".//a[contains(@class,'author')]/text()").extract()[0].encode("utf8")
+                item['reviewerurl'] = reviewdiv.xpath("./a[contains(@class,'author')]/@href").extract()[0].encode("utf8")
             except IndexError:
                 pass
 
             #Compute the rating of the book by the presence of the css clas "a-star-rating"
-            head = comments.xpath(".//../..//i[contains(@class,'a-star-')]/@class").extract()[0].encode("utf8")
+            head = reviewdiv.xpath(".//i[contains(@class,'a-star-')]/@class").extract()[0].encode("utf8")
             if "a-star-5" in head:
                 grade = 5
             elif "a-star-4" in head :
@@ -44,11 +45,11 @@ class ReleaseSpider(scrapy.Spider):
 
             item['rating'] = grade
             item ['indexcount'] = pagecount * reviewcount
-            item['id'] = comments.xpath(".//../../@id").extract()[0].encode("utf8")
+            item['id'] = reviewdiv.xpath("./@id").extract()[0].encode("utf8")
 
             #Hepfulness of review
             try :
-                helpfulspan = comments.xpath(".//../..//span[contains(.,'review helpful')]/text()").extract()[0].encode("utf8")
+                helpfulspan = reviewdiv.xpath(".//span[contains(.,'review helpful')]/text()").extract()[0].encode("utf8")
                 helpful = helpfulspan.split("of")[0].strip()
                 total = helpfulspan.split("of")[1].split("people")[0].strip()
                 item['helpful'] = int(filter(str.isdigit,helpful))
@@ -57,9 +58,9 @@ class ReleaseSpider(scrapy.Spider):
                 pass
 
 
-            item['title'] = comments.xpath(".//../..//a[contains(@class,'a-text-bold')]/text()").extract()[0].encode("utf8")
+            item['title'] = reviewdiv.xpath(".//a[contains(@class,'a-text-bold')]/text()").extract()[0].encode("utf8")
             #Is it a verified purchase ?
-            if "Verified Purchase" in comments.xpath(".//../..").extract()[0]:
+            if "Verified Purchase" in reviewdiv.extract()[0]:
                 verified = 1
             else :
                 verified = 0
