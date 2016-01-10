@@ -25,6 +25,7 @@ class Book(scrapy.Item):
     asin = scrapy.Field()
     haseditorialreview = scrapy.Field()
     alsobought = scrapy.Field()
+    ispreorder = scrapy.Field()
 
 class HotRelease(scrapy.Item):
     url = scrapy.Field()

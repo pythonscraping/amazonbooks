@@ -36,22 +36,20 @@ class AmazonSpider(scrapy.Spider):
 "http://www.amazon.com/End-Watch-Novel-Hodges-Trilogy/dp/1501129740",
 "http://www.amazon.com/Brotherhood-Death-J-D-Robb/dp/0399170898",
 "http://www.amazon.com/Last-Star-Final-Book-Wave/dp/0399162437",
-"http://www.amazon.com/Morning-Star-Book-Rising-Trilogy/dp/0345539842",
-"http://www.amazon.com/Inspire-Bible-NLT-Creative-Journaling/dp/1496413733",
-"http://www.amazon.com/Baseball-Prospectus-2016-Sam-Miller/dp/1681621185",
-"http://www.amazon.com/Calamity-Reckoners-Brandon-Sanderson/dp/0385743602"]
+"http://www.amazon.com/The-Negative-Calorie-Diet-Pounds/dp/0062378139/"]
 
     def parse(self, response):
 
         item = Book()
-
         item['url'] = response.url
 
         #Get asin from url
         asinregex = re.search("/([a-zA-Z0-9]{10})(?:[/?]|$)",str(response.url)).group(0)
         item['asin'] = int(filter(str.isdigit,asinregex))
-
-
+        if "item has not been released" in response.body :
+            item['ispreorder'] = "1"
+        else :
+            item['ispreorder'] = "0"
         # Description of the Book
         description = ''
         description = ''.join(response.xpath(".//*[@id='bookDescription_feature_div']/noscript/div/descendant::*/text()").extract())
