@@ -8,7 +8,8 @@ class ReleaseSpider(scrapy.Spider):
     allowed_domains = ["amazon.com"]
     start_urls = [
         #Beware this one has 721 pages...
-        "http://www.amazon.com/product-reviews/1607747308/ref=cm_cr_pr_btm_link_1?pageNumber=1"
+        #"http://www.amazon.com/product-reviews/1607747308/ref=cm_cr_pr_btm_link_1?pageNumber=1",
+        "http://www.amazon.com/product-reviews/0544272994/ref=cm_cr_pr_btm_link_1?pageNumber=1"
     ]  
 
     def parse(self, response):
@@ -55,6 +56,45 @@ class ReleaseSpider(scrapy.Spider):
             except IndexError:
                 item['format'] = "error"
 
+            ####### TOP REVIEWERS ######
+            #Vine Voice
+            if "VINE VOICE" in reviewdiv.extract()[0]:
+                item['vinevoice'] = 1
+            else:
+                item['vinevoice'] = 0
+
+            if "TOP 10 REVIEWER" in reviewdiv.extract()[0]:
+                item['top10Reviewer'] = 1
+            else:
+                item['top10Reviewer'] = 0
+
+            if "TOP 50 REVIEWER" in reviewdiv.extract()[0]:
+                item['top50Reviewer'] = 1
+            else:
+                item['top50Reviewer'] = 0
+
+            if "TOP 100 REVIEWER" in reviewdiv.extract()[0]:
+                item['top100Reviewer'] = 1
+            else:
+                item['top100Reviewer'] = 0
+
+            if "TOP 500 REVIEWER" in reviewdiv.extract()[0]:
+                item['top500Reviewer'] = 1
+            else:
+                item['top500Reviewer'] = 0
+
+            if "TOP 1000 REVIEWER" in reviewdiv.extract()[0]:
+                item['top1000Reviewer'] = 1
+            else:
+                item['top1000Reviewer'] = 0
+
+            if "HALL OF FAME" in reviewdiv.extract()[0]:
+                item['HallOfFameReviewer'] = 1
+            else:
+                item['HallOfFameReviewer'] = 0
+
+
+
             #Hepfulness of review
             try :
                 helpfulspan = reviewdiv.xpath(".//span[contains(.,'review helpful')]/text()").extract()[0].encode("utf8")
@@ -74,11 +114,10 @@ class ReleaseSpider(scrapy.Spider):
                 verified = 0
             item ['verified'] = verified
             yield item
-"""
+
         try :
             nextlink = "http://www.amazon.com" + response.xpath(".//li[contains(@class,'a-last')]/a/@href").extract()[0]
             print nextlink
             yield scrapy.Request(nextlink)
         except IndexError:
             print "We stop here"
-"""

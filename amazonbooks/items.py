@@ -56,3 +56,11 @@ class Review(scrapy.Item):
     helpful = scrapy.Field()
     total = scrapy.Field()
     format = scrapy.Field()
+    #TOP reviewers
+    vinevoice = scrapy.Field() #Trusted by Amazon
+    top10Reviewer = scrapy.Field()
+    top50Reviewer = scrapy.Field()
+    top100Reviewer = scrapy.Field()
+    top500Reviewer = scrapy.Field()
+    top1000Reviewer	= scrapy.Field()
+    HallOfFameReviewer = scrapy.Field()
