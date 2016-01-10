@@ -55,3 +55,4 @@ class Review(scrapy.Item):
     indexcount = scrapy.Field() #the lowest the highest the comment.
     helpful = scrapy.Field()
     total = scrapy.Field()
+    format = scrapy.Field()

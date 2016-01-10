@@ -47,6 +47,14 @@ class ReleaseSpider(scrapy.Spider):
             item ['indexcount'] = pagecount * reviewcount
             item['id'] = reviewdiv.xpath("./@id").extract()[0].encode("utf8")
 
+
+            #Format
+            try:
+                format = reviewdiv.xpath(".//a[contains(.,'Format:')]/text()").extract()[0].encode("utf8")
+                item['format'] = format.split("Format:")[1].strip()
+            except IndexError:
+                item['format'] = "error"
+
             #Hepfulness of review
             try :
                 helpfulspan = reviewdiv.xpath(".//span[contains(.,'review helpful')]/text()").extract()[0].encode("utf8")
