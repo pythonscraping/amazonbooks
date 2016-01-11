@@ -52,8 +52,8 @@ class AmazonSpider(scrapy.Spider):
             item['ispreorder'] = "0"
         # Description of the Book
         description = ''
-        description = ''.join(response.xpath(".//*[@id='bookDescription_feature_div']/noscript/div/descendant::*/text()").extract())
-        description += ''.join(response.xpath(".//*[@id='bookDescription_feature_div']/noscript/div/text()").extract())
+        description = u''.join(response.xpath(".//*[@id='bookDescription_feature_div']/noscript/div/descendant::*/text()").extract())
+        description += u''.join(response.xpath(".//*[@id='bookDescription_feature_div']/noscript/div/text()").extract())
         item['description'] = description.encode("utf-8")
 
 
@@ -63,7 +63,7 @@ class AmazonSpider(scrapy.Spider):
             item ['pages'] = int(pages.split('pages')[0].strip())
         except IndexError:
             item ['pages'] = 'not found'
-            
+
 
 
         #Allow Preview?
@@ -87,28 +87,28 @@ class AmazonSpider(scrapy.Spider):
 
         #General Information
         try:
-            item['publisher'] = str(response.xpath(".//b[contains(text(),'Publisher')]/../text()").extract()[0]).strip()
+            item['publisher'] = response.xpath(".//b[contains(text(),'Publisher')]/../text()").extract()[0].encode('utf-8').strip()
         except IndexError:
             item['publisher'] = 'null'
 
         try:
-            item['isbn10'] = str(response.xpath(".//b[contains(text(),'ISBN-10')]/../text()").extract()[0]).strip()
+            item['isbn10'] = response.xpath(".//b[contains(text(),'ISBN-10')]/../text()").extract()[0].encode('utf-8').strip()
         except IndexError:
             item['isbn10'] = 'null'
 
         try:
-            item['isbn13'] = str(response.xpath(".//b[contains(text(),'ISBN-13')]/../text()").extract()[0]).strip()
+            item['isbn13'] = response.xpath(".//b[contains(text(),'ISBN-13')]/../text()").extract()[0].encode('utf-8').strip()
         except IndexError:
             item['isbn13'] = 'null'
 
         try:
-            item['dimensions'] = str(response.xpath(".//b[contains(text(),'Dimensions')]/../text()").extract()[0]).strip()
+            item['dimensions'] = response.xpath(".//b[contains(text(),'Dimensions')]/../text()").extract()[0].encode('utf-8').strip()
         except IndexError:
             item['dimensions'] = 'null'
 
         #Average rating
         try:
-            averagestr = str(response.xpath(".//span[contains(@class,'s_star_')]/@title").extract()[0]).split("out")[0]
+            averagestr = response.xpath(".//span[contains(@class,'s_star_')]/@title").extract()[0].encode('utf-8').split("out")[0]
             item['average'] = strToFloat(averagestr)
         except IndexError:
             item['average'] = "no average"
@@ -148,6 +148,5 @@ class AmazonSpider(scrapy.Spider):
         #bestsellerrank
         bestsellerrankdirty = response.xpath(".//b[contains(text(),'Amazon Best')]/../text()").extract()
         bestsellerrankstring = str("".join(bestsellerrankdirty))
-        #item['bestsellerrank'] = int(filter(str.isdigit, bestsellerrankstring)) # We get only the number information
-        #print "Result:", bestsellerrank
+        item['bestsellerrank'] = int(filter(str.isdigit, bestsellerrankstring)) # We get only the number information
         yield item
