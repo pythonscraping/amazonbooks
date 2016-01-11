@@ -25,7 +25,7 @@ class ReleaseSpider(scrapy.Spider):
                 pass
             try:
                 item['reviewer'] = reviewdiv.xpath(".//a[contains(@class,'author')]/text()").extract()[0].encode("utf8")
-                item['reviewerurl'] = reviewdiv.xpath("./a[contains(@class,'author')]/@href").extract()[0].encode("utf8")
+                item['reviewerurl'] = reviewdiv.xpath(".//a[contains(@class,'author')]/@href").extract()[0].encode("utf8")
             except IndexError:
                 pass
 
@@ -45,7 +45,7 @@ class ReleaseSpider(scrapy.Spider):
                 grade = "error"
 
             item['rating'] = grade
-            item ['indexcount'] = pagecount * reviewcount
+            item ['indexcount'] = pagecount * (reviewcount + 1)
             item['id'] = reviewdiv.xpath("./@id").extract()[0].encode("utf8")
 
 

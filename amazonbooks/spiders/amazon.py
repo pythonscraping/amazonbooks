@@ -56,6 +56,14 @@ class AmazonSpider(scrapy.Spider):
         description += ''.join(response.xpath(".//*[@id='bookDescription_feature_div']/noscript/div/text()").extract())
         item['description'] = description.encode("utf-8")
 
+
+        #Pages
+
+        try:
+            pages = response.xpath(".//table[contains(@id,'productDetailsTable')]//li[contains(.,'pages')]/text()").extract()[0].encode('utf-8')
+            item ['pages'] = int(pages.split('pages')[0].strip())
+        except IndexError:
+            item ['pages'] = 'not found'
         #Extract listprice info
         try:
             listprice = response.xpath(".//span[@class='a-color-secondary a-text-strike']/text()").extract()[0]
