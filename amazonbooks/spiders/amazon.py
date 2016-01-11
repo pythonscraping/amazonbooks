@@ -58,12 +58,20 @@ class AmazonSpider(scrapy.Spider):
 
 
         #Pages
-
         try:
             pages = response.xpath(".//table[contains(@id,'productDetailsTable')]//li[contains(.,'pages')]/text()").extract()[0].encode('utf-8')
             item ['pages'] = int(pages.split('pages')[0].strip())
         except IndexError:
             item ['pages'] = 'not found'
+            
+
+
+        #Allow Preview?
+        if "sitbLogo" in response.body :
+            item['allowpreview'] = "1"
+        else :
+            item['allowpreview'] = "1"
+
         #Extract listprice info
         try:
             listprice = response.xpath(".//span[@class='a-color-secondary a-text-strike']/text()").extract()[0]

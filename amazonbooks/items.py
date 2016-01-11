@@ -27,6 +27,7 @@ class Book(scrapy.Item):
     alsobought = scrapy.Field()
     ispreorder = scrapy.Field()
     pages = scrapy.Field()
+    allowpreview = scrapy.Field()
 
 class HotRelease(scrapy.Item):
     url = scrapy.Field()
