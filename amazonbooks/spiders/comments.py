@@ -2,14 +2,24 @@
 import scrapy
 from amazonbooks.items import Review
 import re
+import psycopg2
 
 class ReleaseSpider(scrapy.Spider):
     name = "reviews"
     allowed_domains = ["amazon.com"]
+    #Connection to the database
+    conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
+    cur = conn.cursor()
+    cur.execute("""SELECT asin FROM safelist""")
+    rows = cur.fetchall()
+    for row in rows:
+        print "http://www.amazon.com/product-reviews/",row[0],"/ref=cm_cr_pr_btm_link_1?pageNumber=1"
+    
+
     start_urls = [
         #Beware this one has 721 pages...
         #"http://www.amazon.com/product-reviews/1607747308/ref=cm_cr_pr_btm_link_1?pageNumber=1",
-        "http://www.amazon.com/product-reviews/0544272994/ref=cm_cr_pr_btm_link_1?pageNumber=1"
+        #"http://www.amazon.com/product-reviews/0544272994/ref=cm_cr_pr_btm_link_1?pageNumber=1"
     ]  
 
     def parse(self, response):
