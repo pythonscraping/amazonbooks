@@ -24,7 +24,7 @@ class psqlpipeline(object):
             kindle = float(item['kindle'])
             hardcover = float(item['hardcover'])
             paperback = float(item['paperback'])
-            SQL = "INSERT INTO books (url,asin,kindle,hardcover,paperback) VALUES (%s,%s,%s;%s;%s);"
+            SQL = "INSERT INTO books (url,asin,kindle,hardcover,paperback) VALUES (%s,%s,%s,%s,%s);"
             data = (item['url'], item['asin'],kindle,hardcover,paperback)
             cur.execute (SQL,data)
             conn.commit()
