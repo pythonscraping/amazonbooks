@@ -13,8 +13,8 @@ class ReleaseSpider(scrapy.Spider):
     cur.execute("""SELECT asin FROM safelist""")
     rows = cur.fetchall()
     for row in rows:
-        print "http://www.amazon.com/product-reviews/",row[0],"/ref=cm_cr_pr_btm_link_1?pageNumber=1"
-    
+        print "http://www.amazon.com/product-reviews/" + row[0] + "/ref=cm_cr_pr_btm_link_1?pageNumber=1"
+
 
     start_urls = [
         #Beware this one has 721 pages...
