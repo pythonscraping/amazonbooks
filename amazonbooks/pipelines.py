@@ -16,11 +16,11 @@ class psqlpipeline(object):
         pass
 
     def process_item(self, item, spider):
+        conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
+        cur = conn.cursor()
         if (spider.name == "amazons") : #Only execute it for the amazons pipeline
             #print spider.name
             #try :
-            conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
-            cur = conn.cursor()
             kindle = float(item['kindle'])
             hardcover = float(item['hardcover'])
             paperback = float(item['paperback'])
@@ -32,18 +32,18 @@ class psqlpipeline(object):
             #    print "Database error"
             return item
         elif (spider.name == "releases"):
-            conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
-            cur = conn.cursor()
             SQL = "INSERT INTO safelist (asin,url,reason,releasedate,scrapedate) VALUES (%s,%s,%s,%s,%s);"
             data = (item['asin'], item['url'],"newreleases",item['releaseDate'],datetime.datetime.now())
             cur.execute (SQL,data)
             conn.commit()
 
         elif (spider.name == "reviews"):
-            conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
-            cur = conn.cursor()
-            SQL = "INSERT INTO reviews (asin,review,title,date,amazonid,scrapedate,vinevoice) VALUES (%s,%s,%s,%s,%s,%s,%s);"
-            data = (item['asin'],item['review'],item['title'],item['date'],item['id'],datetime.datetime.now(),str(item['vinevoice']))
+            SQL = "INSERT INTO reviews (asin,review,title,date,amazonid,scrapedate" \
+                  ",vinevoice, top10, top50,top100, top500, top1000, verified) " \
+                  "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+            data = (item['asin'],item['review'],item['title'],item['date'],item['id'],datetime.datetime.now()
+                    ,str(item['vinevoice']),str(item['top10Reviewer']),str(item['top50Reviewer']),str(item['top100Reviewer']),
+                    str(item['top500Reviewer']),str(item['top1000Reviewer']),str(item['verified']))
             cur.execute (SQL,data)
             conn.commit()
             return item
