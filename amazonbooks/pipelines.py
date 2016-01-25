@@ -39,11 +39,13 @@ class psqlpipeline(object):
 
         elif (spider.name == "reviews"):
             SQL = "INSERT INTO reviews (asin,review,title,date,amazonid,scrapedate" \
-                  ",vinevoice, top10, top50,top100, top500, top1000, verified) " \
-                  "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+                  ",vinevoice, top10, top50,top100, top500, top1000, verified,indexcount," \
+                  "helpful,total,rating) " \
+                  "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
             data = (item['asin'],item['review'],item['title'],item['date'],item['id'],datetime.datetime.now()
                     ,str(item['vinevoice']),str(item['top10Reviewer']),str(item['top50Reviewer']),str(item['top100Reviewer']),
-                    str(item['top500Reviewer']),str(item['top1000Reviewer']),str(item['verified']))
+                    str(item['top500Reviewer']),str(item['top1000Reviewer']),str(item['verified']),
+                    item['indexcount'],item['helpful'],item['total'],item['rating'])
             cur.execute (SQL,data)
             conn.commit()
             return item
