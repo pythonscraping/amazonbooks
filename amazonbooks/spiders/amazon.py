@@ -20,12 +20,20 @@ def strToFloat(strFloat):
 def getprice (type,value,book):
     if ("Kindle" in type) and value > 0:
         book['kindle'] = value
+    else:
+        book['kindle'] = -1
     if ("Hardcover" in type) and value > 0:
         book['hardcover'] = value
+    else:
+        book['hardcover'] = -1
     if ("Paperback" in type) and not("Mass" in type) and value > 0:
         book['paperback'] = value
+    else:
+        book['paperback'] = -1
     if ("Mass Market Paperback" in type) and value > 0:
         book['massmarketpaperback'] = value
+    else:
+        book['massmarketpaperback'] = -1
 
 
 class MyList(list):
