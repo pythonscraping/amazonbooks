@@ -8,7 +8,7 @@
 
 import json
 import psycopg2
-
+import datetime
 
 class psqlpipeline(object):
 
@@ -31,6 +31,10 @@ class psqlpipeline(object):
             #except:
             #    print "Database error"
             return item
-        else:
-            print item['url']
-
+        if (spider.name == "releases"):
+            conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
+            cur = conn.cursor()
+            SQL = "INSERT INTO books (asin,url,reason,releasedate,scrapedate) VALUES (%s,%s,%s,%s,%s);"
+            data = (item['asin'], item['url'],"newreleases",item['releaseDate'],datetime.datetime.now())
+            cur.execute (SQL,data)
+            conn.commit()

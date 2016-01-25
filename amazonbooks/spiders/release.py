@@ -13,7 +13,8 @@ class ReleaseSpider(scrapy.Spider):
         "http://www.amazon.com/gp/new-releases/books/ref=zg_bsnr_books_pg_1?ie=UTF8&pg=1",
         "http://www.amazon.com/gp/new-releases/books/ref=zg_bsnr_books_pg_2?ie=UTF8&pg=2",
         "http://www.amazon.com/gp/new-releases/books/ref=zg_bsnr_books_pg_3?ie=UTF8&pg=3",
-        "http://www.amazon.com/gp/new-releases/books/ref=zg_bsnr_books_pg_4?ie=UTF8&pg=4"
+        "http://www.amazon.com/gp/new-releases/books/ref=zg_bsnr_books_pg_4?ie=UTF8&pg=4",
+        "http://www.amazon.com/gp/new-releases/books/ref=zg_bsnr_books_pg_4?ie=UTF8&pg=5"
     ]
     def parse(self, response):
         item = HotRelease()
