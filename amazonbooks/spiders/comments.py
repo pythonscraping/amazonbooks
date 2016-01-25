@@ -17,7 +17,7 @@ class ReleaseSpider(scrapy.Spider):
         pagecount = int(response.url.split("pageNumber=")[1])
         #Get asin from url
         asinregex = re.search("/([a-zA-Z0-9]{10})(?:[/?]|$)",str(response.url)).group(0)
-        item['asin'] = int(filter(str.isdigit,asinregex))
+        item['asin'] = str(filter(str.isdigit,asinregex))
         #for comments in response.xpath(".//*[@id='cm_cr-review_list']//div") :
         for reviewcount,comments in enumerate(response.xpath(".//span[contains(@class,'review-text')]")) :
             reviewdiv = comments.xpath(".//../..") #main div containing a review
