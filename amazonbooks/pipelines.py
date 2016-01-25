@@ -26,7 +26,7 @@ class psqlpipeline(object):
                 cur.execute (SQL,data)
                 conn.commit()
             except:
-                print "Database error" 
+                print "Database error"
             return item
         else:
             print item['url']
