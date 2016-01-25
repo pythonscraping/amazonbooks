@@ -14,7 +14,9 @@ BOT_NAME = 'amazonbooks'
 SPIDER_MODULES = ['amazonbooks.spiders']
 NEWSPIDER_MODULE = 'amazonbooks.spiders'
 
-
+ITEM_PIPELINES = {
+    'amazonbooks.pipelines.psqlpipeline': 300,
+}
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'amazonbooks (+http://www.yourdomain.com)'
 
@@ -61,9 +63,7 @@ NEWSPIDER_MODULE = 'amazonbooks.spiders'
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'amazonbooks.pipelines.SomePipeline': 300,
-#}
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
