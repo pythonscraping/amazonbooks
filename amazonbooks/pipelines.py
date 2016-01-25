@@ -39,5 +39,12 @@ class psqlpipeline(object):
             cur.execute (SQL,data)
             conn.commit()
 
+        elif (spider.name == "releases"):
+            conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
+            cur = conn.cursor()
+            SQL = "INSERT INTO reviews (asin,review,title,date,amazonid,scrapedate) VALUES (%s,%s,%s,%s,%s;%s);"
+            data = (item['asin'],item['review'],item['title'],item['date'],item['id'],datetime.datetime.now())
+            return item
+
         else:
             return item

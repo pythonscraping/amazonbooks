@@ -50,6 +50,7 @@ class Review(scrapy.Item):
     review = scrapy.Field()
     title = scrapy.Field()
     date = scrapy.Field()
+    asin = scrapy.Field()
     #author = scrapy.Field()
     #authorLink = scrapy.Field()
     rating = scrapy.Field()
