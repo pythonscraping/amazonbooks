@@ -15,6 +15,7 @@ class ReleaseSpider(scrapy.Spider):
     def parse(self, response):
         item = Review()
         pagecount = int(response.url.split("pageNumber=")[1])
+
         #Get asin from url
         asinregex = re.search("/([a-zA-Z0-9]{10})(?:[/?]|$)",str(response.url)).group(0)
         item['asin'] = str(filter(str.isdigit,asinregex))
@@ -48,7 +49,8 @@ class ReleaseSpider(scrapy.Spider):
                 grade = "error"
 
             item['rating'] = grade
-            item ['indexcount'] = pagecount * (reviewcount + 1)
+            item ['indexcount'] = (reviewcount + 1)+ (10 * (pagecount-1))
+            print pagecount , reviewcount, "EXPLICAY MOI"
             item['id'] = reviewdiv.xpath("./@id").extract()[0].encode("utf8")
 
 
