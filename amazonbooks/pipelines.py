@@ -16,7 +16,7 @@ class psqlpipeline(object):
         pass
 
     def process_item(self, item, spider):
-        if (spider.name == "amazonss") : #Only execute it for the amazons pipeline
+        if (spider.name == "amazons") : #Only execute it for the amazons pipeline
             #print spider.name
             conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
             cur = conn.cursor()
