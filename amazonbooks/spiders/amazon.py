@@ -81,6 +81,11 @@ class AmazonSpider(scrapy.Spider):
             item['listprice'] = strToFloat(listprice)
         except IndexError:
             item['listprice'] = 'null'
+        #Prices default values
+        item['kindle'] = -1
+        item['paperback'] = -1
+        item['hardcover'] = -1
+        item['massmarketpaperback'] = -1
 
         ### Extract the Price information using XPath ###
         for price in response.xpath(".//div[@id='twister']/div/span[@class='a-declarative']/table/tr") :
