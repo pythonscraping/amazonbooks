@@ -4,6 +4,9 @@ from amazonbooks.items import Review
 import re
 import psycopg2
 
+def getasinfromurl(url):
+    return url.split("/dp/")[1].split("/")[0]
+
 class ReleaseSpider(scrapy.Spider):
     name = "reviews"
     allowed_domains = ["amazon.com"]
@@ -28,8 +31,9 @@ class ReleaseSpider(scrapy.Spider):
         pagecount = int(response.url.split("pageNumber=")[1])
 
         #Get asin from url
-        asinregex = re.search("/([a-zA-Z0-9]{10})(?:[/?]|$)",str(response.url)).group(0)
-        item['asin'] = str(filter(str.isdigit,asinregex))
+        #asinregex = re.search("/([a-zA-Z0-9]{10})(?:[/?]|$)",str(response.url)).group(0)
+        #item['asin'] = str(filter(str.isdigit,asinregex))
+        item['asin'] = getasinfromurl(str(response.url))
         #for comments in response.xpath(".//*[@id='cm_cr-review_list']//div") :
         for reviewcount,comments in enumerate(response.xpath(".//span[contains(@class,'review-text')]")) :
             reviewdiv = comments.xpath(".//../..") #main div containing a review
