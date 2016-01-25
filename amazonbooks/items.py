@@ -10,10 +10,10 @@ import scrapy
 
 class Book(scrapy.Item):
     url = scrapy.Field()
-    kindle 	   = scrapy.Field()
-    hardcover  = scrapy.Field()
-    paperback  = scrapy.Field()
-    massmarketpaperback = scrapy.Field()
+    kindle 	   = scrapy.Field(default = -1)
+    hardcover  = scrapy.Field(default = -1)
+    paperback  = scrapy.Field(default =-1)
+    massmarketpaperback = scrapy.Field(default=-1)
     description = scrapy.Field()
     listprice = scrapy.Field()
     publisher = scrapy.Field()
