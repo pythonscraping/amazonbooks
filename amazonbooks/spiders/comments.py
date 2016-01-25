@@ -120,9 +120,7 @@ class ReleaseSpider(scrapy.Spider):
             except IndexError:
                 item['helpful'] = 0
                 item['total'] = 0
-            if item['helpful'] :
-                pass
-            else :
+            if 'helpful' not in item :
                 print "IT DOES NOT EXIST"
             item['title'] = reviewdiv.xpath(".//a[contains(@class,'a-text-bold')]/text()").extract()[0].encode("utf8")
             #Is it a verified purchase ?
