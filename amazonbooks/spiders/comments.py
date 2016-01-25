@@ -17,7 +17,7 @@ class ReleaseSpider(scrapy.Spider):
         pagecount = int(response.url.split("pageNumber=")[1])
         #for comments in response.xpath(".//*[@id='cm_cr-review_list']//div") :
         for reviewcount,comments in enumerate(response.xpath(".//span[contains(@class,'review-text')]")) :
-            reviewdiv = comments.xpath(".//../..")
+            reviewdiv = comments.xpath(".//../..") #main div containing a review
             item['review'] = ''.join(comments.xpath(".//text()").extract()).encode("utf8")
             try:
                 item['date'] = reviewdiv.xpath(".//span[contains(@class,'review-date')]/text()").extract()[0].encode("utf8")

@@ -20,6 +20,8 @@ class ReleaseSpider(scrapy.Spider):
 
 
     def parse(self, response):
+
+
         item = LastRelease()
         a = response.xpath("//*[contains(@id,'result_')]")
         for b in a :
@@ -31,4 +33,7 @@ class ReleaseSpider(scrapy.Spider):
             hs.write("\"" + str(url).encode('utf8') +"\""+"," + "\n")
             m = re.search('dp\/(.*)', str(url))
             item['ASIN'] = m.group(0)[3:]
+            fo = open( "html/" + m.group(0)[3:]+ " "+str(now.day)+"-"+str(now.month)+"-"+str(now.year)+ ".html", "w")
+            fo.write(response.body)
+            fo.close()
             yield item

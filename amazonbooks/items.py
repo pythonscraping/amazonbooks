@@ -21,6 +21,7 @@ class Book(scrapy.Item):
     isbn13 = scrapy.Field()
     dimensions = scrapy.Field()
     bestsellerrank = scrapy.Field()
+    #Subranks
     average = scrapy.Field()
     asin = scrapy.Field()
     haseditorialreview = scrapy.Field()
@@ -28,6 +29,8 @@ class Book(scrapy.Item):
     ispreorder = scrapy.Field()
     pages = scrapy.Field()
     allowpreview = scrapy.Field()
+    subrankscore = scrapy.Field()
+    subrankdetail = scrapy.Field()
 
 class HotRelease(scrapy.Item):
     url = scrapy.Field()
@@ -47,8 +50,8 @@ class Review(scrapy.Item):
     review = scrapy.Field()
     title = scrapy.Field()
     date = scrapy.Field()
-    author = scrapy.Field()
-    authorLink = scrapy.Field()
+    #author = scrapy.Field()
+    #authorLink = scrapy.Field()
     rating = scrapy.Field()
     verified = scrapy.Field()
     reviewer = scrapy.Field()
@@ -57,7 +60,7 @@ class Review(scrapy.Item):
     indexcount = scrapy.Field() #the lowest the highest the comment.
     helpful = scrapy.Field()
     total = scrapy.Field()
-    format = scrapy.Field()
+    format = scrapy.Field() #Binding
     #TOP reviewers
     vinevoice = scrapy.Field() #Trusted by Amazon
     top10Reviewer = scrapy.Field()

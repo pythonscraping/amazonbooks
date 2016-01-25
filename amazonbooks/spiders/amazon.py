@@ -28,6 +28,9 @@ def getprice (type,value,book):
         book['massmarketpaperback'] = value
 
 
+class MyList(list):
+    def utf(self):
+        return [x.encode('utf-8') for x in self]
 
 class AmazonSpider(scrapy.Spider):
     name = "amazons"
@@ -149,4 +152,15 @@ class AmazonSpider(scrapy.Spider):
         bestsellerrankdirty = response.xpath(".//b[contains(text(),'Amazon Best')]/../text()").extract()
         bestsellerrankstring = str("".join(bestsellerrankdirty))
         item['bestsellerrank'] = int(filter(str.isdigit, bestsellerrankstring)) # We get only the number information
+
+        #Subranks
+        rankdirty = response.xpath(".//li[contains(@class,'zg_hrsr_item')]")
+        subranklist = []
+        for rank in rankdirty :
+            subrank = rank.xpath(".//span")
+            subrankscore = int(filter(str.isdigit, subrank[0].extract().encode('utf-8')))
+            subrankdetail = u''.join(MyList(subrank[1].xpath(".//descendant-or-self::*/text()").extract())).encode('utf-8').split("in")[1].strip()
+            subranklist.append([subrankscore,subrankdetail])
+        item['subrankdetail'] = subranklist
+
         yield item
