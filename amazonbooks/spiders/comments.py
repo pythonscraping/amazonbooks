@@ -119,8 +119,8 @@ class ReleaseSpider(scrapy.Spider):
                 item['helpful'] = int(filter(str.isdigit,helpful))
                 item['total'] = int(filter(str.isdigit,total))
             except IndexError:
-                pass
-
+                item['helpful'] = 0
+                item['total'] = 0
 
             item['title'] = reviewdiv.xpath(".//a[contains(@class,'a-text-bold')]/text()").extract()[0].encode("utf8")
             #Is it a verified purchase ?
