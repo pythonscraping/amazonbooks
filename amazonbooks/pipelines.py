@@ -41,7 +41,7 @@ class psqlpipeline(object):
             SQL = "INSERT INTO reviews (asin,review,title,date,amazonid,scrapedate" \
                   ",vinevoice, top10, top50,top100, top500, top1000, verified,indexcount," \
                   "helpful,total,rating,format,halloffame,reviewer,reviewerurl) " \
-                  "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+                  "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
             data = (item['asin'],item['review'],item['title'],item['date'],item['id'],datetime.datetime.now()
                     ,str(item['vinevoice']),str(item['top10Reviewer']),str(item['top50Reviewer']),str(item['top100Reviewer']),
                     str(item['top500Reviewer']),str(item['top1000Reviewer']),str(item['verified']),
