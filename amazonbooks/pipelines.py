@@ -44,6 +44,8 @@ class psqlpipeline(object):
             cur = conn.cursor()
             SQL = "INSERT INTO reviews (asin,review,title,date,amazonid,scrapedate) VALUES (%s,%s,%s,%s,%s;%s);"
             data = (item['asin'],item['review'],item['title'],item['date'],item['id'],datetime.datetime.now())
+            cur.execute (SQL,data)
+            conn.commit()
             return item
 
         else:
