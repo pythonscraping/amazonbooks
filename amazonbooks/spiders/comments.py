@@ -5,7 +5,7 @@ import re
 import psycopg2
 
 def getasinfromurl(url):
-    return url.split("/product-reviews/")[1].split("/")[0]
+    return url.split("/product-reviews/")[1].split("/")[0].split("?")[0]
 
 class ReleaseSpider(scrapy.Spider):
     name = "reviews"
