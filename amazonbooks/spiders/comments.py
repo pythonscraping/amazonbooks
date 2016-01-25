@@ -61,7 +61,6 @@ class ReleaseSpider(scrapy.Spider):
 
             item['rating'] = grade
             item ['indexcount'] = (reviewcount + 1)+ (10 * (pagecount-1))
-            print pagecount , reviewcount, "EXPLICAY MOI"
             item['id'] = reviewdiv.xpath("./@id").extract()[0].encode("utf8")
 
 
@@ -121,7 +120,10 @@ class ReleaseSpider(scrapy.Spider):
             except IndexError:
                 item['helpful'] = 0
                 item['total'] = 0
-
+            if item['helpful'] :
+                pass
+            else :
+                print "IT DOES NOT EXIST"
             item['title'] = reviewdiv.xpath(".//a[contains(@class,'a-text-bold')]/text()").extract()[0].encode("utf8")
             #Is it a verified purchase ?
             if "Verified Purchase" in reviewdiv.extract()[0]:
