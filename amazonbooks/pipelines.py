@@ -43,6 +43,12 @@ class psqlpipeline(object):
             SQL2 = "INSERT INTO booksrank (asin,alsoboughtasin,bestsellerrank,scrapedate) VALUES (%s,%s,%s,%s);"
             data2 = (item['asin'],item['alsobought'],int(item['bestsellerrank']),scrapedate)
             cur.execute (SQL2,data2)
+            for subrank in item['subrankdetail']:
+                subrankscore = int(subrank[0])
+                subrankdetail = subrank[1]
+                SQL3 = "INSERT INTO booksrank (asin,subrank,subrankdetail,scrapedate) VALUES (%s,%s,%s,%s);"
+                data3 = (item['asin'],subrankscore,subrankdetail,scrapedate)
+                cur.execute (SQL3,data3)
             conn.commit()
             return item
         elif (spider.name == "releases"):
