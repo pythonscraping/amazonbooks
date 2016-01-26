@@ -66,13 +66,13 @@ class psqlpipeline(object):
             #Insert mostcritical in booksrank if it does not exist already
             scrapedate = datetime.datetime.now()
             if (item["mostcritical"] != 'null' and len(item["mostcritical"]) > 5):
-                SQL2 = "INSERT INTO booksrank (asin,mostcritical,scrapedate) SELECT %s,%s,%s WHERE NOT EXISTS (SELECT 1 FROM booksrank WHERE mostcritical = %s AND (scrapedate = %s));"
-                data2 = (item['asin'],item['mostcritical'],scrapedate, item['mostcritical'],scrapedate)
+                SQL2 = "INSERT INTO booksrank (asin,mostcritical,scrapedate) SELECT %s,%s,%s WHERE NOT EXISTS (SELECT 1 FROM booksrank WHERE mostcritical = %s);"
+                data2 = (item['asin'],item['mostcritical'],scrapedate, item['mostcritical'])
                 cur.execute (SQL2,data2)
             #non existence of most helpful critical review:
             if (item["mostcritical"] == 'null'):
-                SQL2 = "INSERT INTO booksrank (asin,mostcritical,scrapedate) SELECT %s,%s,%s WHERE NOT EXISTS (SELECT 1 FROM booksrank WHERE asin = %s AND (scrapedate = %s));"
-                data2 = (item['asin'],item['mostcritical'],scrapedate,item['asin'],scrapedate)
+                SQL2 = "INSERT INTO booksrank (asin,mostcritical,scrapedate) SELECT %s,%s,%s WHERE NOT EXISTS (SELECT 1 FROM booksrank WHERE asin = %s);"
+                data2 = (item['asin'],item['mostcritical'],scrapedate,item['asin'])
                 cur.execute (SQL2,data2)
             conn.commit()
             return item
