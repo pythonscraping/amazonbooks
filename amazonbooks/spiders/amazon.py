@@ -121,7 +121,7 @@ class AmazonSpider(scrapy.Spider):
             averagestr = response.xpath(".//span[contains(@class,'s_star_')]/@title").extract()[0].encode('utf-8').split("out")[0]
             item['average'] = strToFloat(averagestr)
         except IndexError:
-            item['average'] = "no average"
+            item['average'] = "-1"
 
         #Editorial review
         editorialh2 = response.xpath(".//h2[contains(text(),'Editorial Review')]/text()").extract()
