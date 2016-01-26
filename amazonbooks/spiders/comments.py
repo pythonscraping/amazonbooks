@@ -29,7 +29,7 @@ class ReleaseSpider(scrapy.Spider):
     def parse(self, response):
         item = Review()
         pagecount = int(response.url.split("pageNumber=")[1])
-        file_name = hashlib.sha224(response.url).hexdigest()
+        file_name = response.url
         with open('files/%s.html' % file_name, 'w+b') as f:
             f.write(response.body)
         #Get asin from url
