@@ -63,8 +63,8 @@ class psqlpipeline(object):
                     item['format'], str(item['HallOfFameReviewer']),
                     item['reviewer'],item['reviewerurl'])
             cur.execute (SQL,data)
-            if (item["mostcritical"] != 'null'):
-                SQL2 = "INSERT INTO booksrank (asin,mostcritical) SELECT %s,%s WHERE NOT EXISTS (SELECT 1 FROM safelist WHERE mostcritical = %s);"
+            if (item["mostcritical"] != 'null' and len(item["mostcritical"]) > 5):
+                SQL2 = "INSERT INTO booksrank (asin,mostcritical) SELECT %s,%s WHERE NOT EXISTS (SELECT 1 FROM booksrank WHERE mostcritical = %s);"
                 data2 = (item['asin'],item['mostcritical'],item['mostcritical'])
                 cur.execute (SQL2,data2)
             conn.commit()
