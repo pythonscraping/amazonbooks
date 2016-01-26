@@ -2,6 +2,7 @@
 import scrapy
 from amazonbooks.items import Review
 import psycopg2
+import hashlib
 
 def getasinfromurl(url):
     return url.split("/product-reviews/")[1].split("/")[0].split("?")[0]
@@ -28,7 +29,9 @@ class ReleaseSpider(scrapy.Spider):
     def parse(self, response):
         item = Review()
         pagecount = int(response.url.split("pageNumber=")[1])
-
+        file_name = hashlib.sha224(response.url).hexdigest()
+        with open('files/%s.html' % file_name, 'w+b') as f:
+            f.write(response.body)
         #Get asin from url
         #asinregex = re.search("/([a-zA-Z0-9]{10})(?:[/?]|$)",str(response.url)).group(0)
         #item['asin'] = str(filter(str.isdigit,asinregex))
