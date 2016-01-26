@@ -85,7 +85,7 @@ class AmazonSpider(scrapy.Spider):
             listprice = response.xpath(".//span[@class='a-color-secondary a-text-strike']/text()").extract()[0]
             item['listprice'] = strToFloat(listprice)
         except IndexError:
-            item['listprice'] = 'null'
+            item['listprice'] = -1
         #Prices default values
         item['kindle'] = -1
         item['paperback'] = -1
