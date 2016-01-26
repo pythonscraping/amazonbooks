@@ -34,6 +34,8 @@ class ReleaseSpider(scrapy.Spider):
         #asinregex = re.search("/([a-zA-Z0-9]{10})(?:[/?]|$)",str(response.url)).group(0)
         #item['asin'] = str(filter(str.isdigit,asinregex))
         item['asin'] = getasinfromurl(str(response.url))
+        mostcritical = response.xpath(".//h4[contains(.,'helpful critical')]/../../..//a[contains(@href,'customer-reviews')]/@href").extract()[0].encode("utf8")
+        item['mostcritical'] = mostcritical
         #for comments in response.xpath(".//*[@id='cm_cr-review_list']//div") :
         for reviewcount,comments in enumerate(response.xpath(".//span[contains(@class,'review-text')]")) :
             reviewdiv = comments.xpath(".//../..") #main div containing a review

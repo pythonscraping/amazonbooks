@@ -10,9 +10,9 @@ import scrapy
 
 class Book(scrapy.Item):
     url = scrapy.Field()
-    kindle 	   = scrapy.Field()
-    hardcover  = scrapy.Field()
-    paperback  = scrapy.Field()
+    kindle = scrapy.Field()
+    hardcover = scrapy.Field()
+    paperback = scrapy.Field()
     massmarketpaperback = scrapy.Field()
     description = scrapy.Field()
     listprice = scrapy.Field()
@@ -70,3 +70,4 @@ class Review(scrapy.Item):
     top500Reviewer = scrapy.Field()
     top1000Reviewer	= scrapy.Field()
     HallOfFameReviewer = scrapy.Field()
+    mostcritical = scrapy.Field()
