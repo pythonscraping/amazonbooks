@@ -27,6 +27,8 @@ def getprice (type,value,book):
     if ("Mass Market Paperback" in type) and value > 0:
         book['massmarketpaperback'] = value
 
+def getasinfromurl(url):
+    return url.split("/dp/")[1].split("/")[0].split("?")[0]
 
 class MyList(list):
     def utf(self):
@@ -47,8 +49,7 @@ class AmazonSpider(scrapy.Spider):
         item['url'] = response.url
 
         #Get asin from url
-        asinregex = re.search("/([a-zA-Z0-9]{10})(?:[/?]|$)",str(response.url)).group(0)
-        item['asin'] = int(filter(str.isdigit,asinregex))
+        item['asin'] = getasinfromurl(response.url)
         if "item has not been released" in response.body :
             item['ispreorder'] = "1"
         else :
