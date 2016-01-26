@@ -24,12 +24,22 @@ class psqlpipeline(object):
             kindle = float(item['kindle'])
             hardcover = float(item['hardcover'])
             paperback = float(item['paperback'])
-            SQL = "INSERT INTO books (url,asin,kindle,hardcover,paperback) VALUES (%s,%s,%s,%s,%s);"
-            data = (item['url'], item['asin'],kindle,hardcover,paperback)
+            massmarketpaperback = float(item['massmarketpaperback'])
+            listprice  = float(item['listprice'])
+            publisher = item['publisher']
+            isbn10 = item['isbn10']
+            isbn13 = item['isbn13']
+            average = float(item['average'])
+            haseditorialreview = str(item['haseditorialreview'])
+            allowpreview = str(item['haseditorialreview'])
+            description = item['description']
+            SQL = "INSERT INTO books (url,asin,kindle,hardcover,paperback,massmarketpaperback" \
+                  ",listprice,publisher,isbn10,isbn13,average,haseditorialreview,allowpreview,description" \
+                  ") VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+            data = (item['url'], item['asin'],kindle,hardcover,paperback,massmarketpaperback
+                    ,listprice,publisher,isbn10,isbn13,average,haseditorialreview,allowpreview,description)
             cur.execute (SQL,data)
             conn.commit()
-            #except:
-            #    print "Database error"
             return item
         elif (spider.name == "releases"):
             SQL = "INSERT INTO safelist (asin,url,reason,releasedate,scrapedate) VALUES (%s,%s,%s,%s,%s);"
