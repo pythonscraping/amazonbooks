@@ -2,7 +2,7 @@
 import scrapy
 from amazonbooks.items import Review
 import psycopg2
-import hashlib
+from time import gmtime, strftime
 
 def getasinfromurl(url):
     return url.split("/product-reviews/")[1].split("/")[0].split("?")[0]
@@ -28,14 +28,15 @@ class ReleaseSpider(scrapy.Spider):
 
     def parse(self, response):
         item = Review()
-        pagecount = int(response.url.split("pageNumber=")[1])
-        file_name = response.url
-        with open('files/%s.html' % file_name, 'w+b') as f:
-            f.write(response.body)
+
         #Get asin from url
         #asinregex = re.search("/([a-zA-Z0-9]{10})(?:[/?]|$)",str(response.url)).group(0)
         #item['asin'] = str(filter(str.isdigit,asinregex))
         item['asin'] = getasinfromurl(str(response.url))
+        pagecount = int(response.url.split("pageNumber=")[1])
+        file_name = item['asin'] + " " + strftime("%Y-%m-%d %H:%M", gmtime())
+        with open('files/%s.html' % file_name, 'w+b') as f:
+            f.write(response.body)
         mostcritical = response.xpath(".//h4[contains(.,'helpful critical')]/../../..//a[contains(@href,'customer-reviews')]/@href").extract()[0].encode("utf8")
         item['mostcritical'] = mostcritical
         #for comments in response.xpath(".//*[@id='cm_cr-review_list']//div") :
