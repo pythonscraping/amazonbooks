@@ -27,7 +27,7 @@ class ReleaseSpider(scrapy.Spider):
         for b in a :
             url = b.xpath("./div/div/div/div[2]/div[1]/a/@href").extract()[0]
             item['crawlDate'] = str(now)
-            item['rank'] = b.xpath("./@id").extract()
+            item['rank'] = int(b.xpath("./@id").extract()[0].encode("utf-8"))
             item['releaseDate'] = b.xpath("./div/div/div/div[2]/div[1]/span[3]/text()").extract()
             item['url'] = url
             m = re.search('dp\/(.*)', str(url))
