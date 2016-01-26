@@ -94,10 +94,13 @@ class AmazonSpider(scrapy.Spider):
 
         ### Extract the Price information using XPath ###
         for price in response.xpath(".//div[@id='twister']/div/span[@class='a-declarative']/table//tr") :
-            priceType = price.xpath('./td[@class="dp-title-col"]/*[@class="title-text"]/span/text()').extract()[0].strip()
-            priceValueString = price.xpath('./td[@class="a-text-right dp-price-col"]//span/text()').extract()[0].strip()
-            priceValue = strToFloat(priceValueString)
-            getprice(priceType,priceValue ,item)
+            try:
+                priceType = price.xpath('./td[@class="dp-title-col"]/*[@class="title-text"]/span/text()').extract()[0].strip()
+                priceValueString = price.xpath('./td[@class="a-text-right dp-price-col"]//span/text()').extract()[0].strip()
+                priceValue = strToFloat(priceValueString)
+                getprice(priceType,priceValue ,item)
+            except IndexError:
+                pass
 
         #General Information
         try:
