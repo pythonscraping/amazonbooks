@@ -149,8 +149,8 @@ class AmazonSpider(scrapy.Spider):
         listofasintemp = []
         listofasin = []
         for link in listoflinks1:
-            if bool(re.search("/([0-9]{10})(?:[/?]|$)",str(link.extract()))):
-                linktemp = re.search("/([0-9]{10})(?:[/?]|$)",str(link.extract())).group(0)
+            if bool(re.search("/([0-9]{10})(?:[/?]|$)",link.extract().encode('utf-8'))):
+                linktemp = re.search("/([0-9]{10})(?:[/?]|$)",link.extract().encode('utf-8')).group(0)
                 listofasintemp.append(int(filter(str.isdigit,str(linktemp))))
             else:
                 pass #it is false
@@ -159,8 +159,8 @@ class AmazonSpider(scrapy.Spider):
         listoflinks2 = response.xpath(".//h2[contains(text(),'What Other Items')]/..//@href")
         listofasintemp = []
         for link in listoflinks2:
-            if bool(re.search("/([0-9]{10})(?:[/?]|$)",str(link.extract()))):
-                linktemp = re.search("/([0-9]{10})(?:[/?]|$)",str(link.extract())).group(0)
+            if bool(re.search("/([0-9]{10})(?:[/?]|$)",link.extract().encode('utf-8'))):
+                linktemp = re.search("/([0-9]{10})(?:[/?]|$)",link.extract().encode('utf-8')).group(0)
                 listofasintemp.append(int(filter(str.isdigit,str(linktemp))))
             else:
                 pass #it is false
