@@ -14,7 +14,8 @@ class ReleaseSpider(scrapy.Spider):
     allowed_domains = ["amazon.com"]
     temp = []
     for i in range (1,50):
-        url = "http://www.amazon.com/s/ref=sr_pg_" + str(i) + "?rh=n%3A283155%2Cp_45%3A1%2Cp_46%3AAfter%2Cp_47%3A2016&page=" + str(i) + "&sort=relevanceexprank&unfiltered=1&ie=UTF8&qid=1452210229"
+        url = "http://www.amazon.com/s/ref=sr_pg_" + str(i) + "?rh=n%3A283155%2Cp_45%3A1%2Cp_46%3AAfter%2Cp_47%3A2016&page=" + str(i) + "&sort=relevanceexprank&unfiltered=1&ie=UTF8&qid=1453841271" #after january 2016
+              #"http://www.amazon.com/s/ref=sr_pg_" + str(i) + "?rh=n%3A283155%2Cp_45%3A2%2Cp_46%3AAfter%2Cp_47%3A2016&page=" + str(i) + "&sort=relevanceexprank&unfiltered=1&ie=UTF8&qid=1453841363"   #after february 2016
         temp.append(url)
     start_urls = temp
 
@@ -33,3 +34,4 @@ class ReleaseSpider(scrapy.Spider):
             m = re.search('dp\/(.*)', str(url))
             item['ASIN'] = m.group(0)[3:]
             yield item
+#"http://www.amazon.com/s/ref=sr_pg_" + str(i) + "?rh=n%3A283155%2Cp_45%3A1%2Cp_46%3AAfter%2Cp_47%3A2016&page=" + str(i) + "&sort=relevanceexprank&unfiltered=1&ie=UTF8&qid=1452210229", #after december 2015
