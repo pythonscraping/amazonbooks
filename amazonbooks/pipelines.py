@@ -42,6 +42,7 @@ class psqlpipeline(object):
             cur.execute (SQL,data)
             SQL2 = "INSERT INTO booksrank (asin,alsoboughtasin,bestsellerrank,scrapedate) VALUES (%s,%s,%s,%s);"
             data2 = (item['asin'],item['alsobought'],int(item['bestsellerrank']),scrapedate)
+            cur.execute (SQL2,data2)
             conn.commit()
             return item
         elif (spider.name == "releases"):
