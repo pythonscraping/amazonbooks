@@ -1,7 +1,6 @@
 #Get all the comments information from a particular book.
 import scrapy
 from amazonbooks.items import Review
-import re
 import psycopg2
 
 def getasinfromurl(url):

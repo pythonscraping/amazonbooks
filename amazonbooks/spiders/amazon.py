@@ -1,6 +1,7 @@
 #Get all the information about a book.
 import scrapy
 import re
+import psycopg2
 
 from amazonbooks.items import Book
 
@@ -37,11 +38,14 @@ class MyList(list):
 class AmazonSpider(scrapy.Spider):
     name = "amazons"
     allowed_domains = ["amazon.com"]
-    start_urls = ["http://www.amazon.com/Lady-Midnight-Artifices-Cassandra-Clare/dp/1442468351",
-"http://www.amazon.com/End-Watch-Novel-Hodges-Trilogy/dp/1501129740",
-"http://www.amazon.com/Brotherhood-Death-J-D-Robb/dp/0399170898",
-"http://www.amazon.com/Last-Star-Final-Book-Wave/dp/0399162437",
-"http://www.amazon.com/The-Negative-Calorie-Diet-Pounds/dp/0062378139/"]
+    conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
+    cur = conn.cursor()
+    cur.execute("""SELECT asin FROM safelist""")
+    temp = []
+    rows = cur.fetchall()
+    for row in rows:
+        temp.append("http://www.amazon.com/dp/" + row[0])
+    start_urls = temp
 
     def parse(self, response):
 
@@ -92,7 +96,6 @@ class AmazonSpider(scrapy.Spider):
         for price in response.xpath(".//div[@id='twister']/div/span[@class='a-declarative']/table/tr") :
             priceType = price.xpath('./td[@class="dp-title-col"]/*[@class="title-text"]/span/text()').extract()[0].strip()
             priceValueString = price.xpath('./td[@class="a-text-right dp-price-col"]//span/text()').extract()[0].strip()
-            print priceValueString, "COUCOU",priceType
             priceValue = strToFloat(priceValueString)
             getprice(priceType,priceValue ,item)
 
