@@ -50,7 +50,11 @@ class psqlpipeline(object):
             data = (item['asin'], item['url'],"newreleases",item['releaseDate'],datetime.datetime.now())
             cur.execute (SQL,data)
             conn.commit()
-
+        elif (spider.name == "search"):
+            SQL = "INSERT INTO safelist (asin,url,reason,releasedate,rank,scrapedate) VALUES (%s,%s,%s,%s,%s,%s);"
+            data = (item['asin'], item['url'],"december2015",item['releaseDate'],item['rank'],datetime.datetime.now())
+            cur.execute (SQL,data)
+            conn.commit()
         elif (spider.name == "reviews"):
             SQL = "INSERT INTO reviews (asin,review,title,date,amazonid,scrapedate" \
                   ",vinevoice, top10, top50,top100, top500, top1000, verified,indexcount," \
