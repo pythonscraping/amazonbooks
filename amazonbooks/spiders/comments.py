@@ -34,11 +34,14 @@ class ReleaseSpider(scrapy.Spider):
         #item['asin'] = str(filter(str.isdigit,asinregex))
         item['asin'] = getasinfromurl(str(response.url))
         pagecount = int(response.url.split("pageNumber=")[1])
-        file_name = item['asin'] + " page:" + str(pagecount) + " " + strftime("%Y-%m-%d %H:%M", gmtime())
+        file_name = "reviewpage:" + item['asin'] + " page:" + str(pagecount) + " " + strftime("%Y-%m-%d %H:%M", gmtime())
         with open('files/%s.html' % file_name, 'w+b') as f:
             f.write(response.body)
-        mostcritical = response.xpath(".//h4[contains(.,'helpful critical')]/../../..//a[contains(@href,'customer-reviews')]/@href").extract()[0].encode("utf8")
-        item['mostcritical'] = mostcritical
+        try:
+            mostcritical = response.xpath(".//h4[contains(.,'helpful critical')]/../../..//a[contains(@href,'customer-reviews')]/@href").extract()[0].encode("utf8")
+            item['mostcritical'] = mostcritical
+        except IndexError:
+            item['mostcritical'] = 'null'
         #for comments in response.xpath(".//*[@id='cm_cr-review_list']//div") :
         for reviewcount,comments in enumerate(response.xpath(".//span[contains(@class,'review-text')]")) :
             reviewdiv = comments.xpath(".//../..") #main div containing a review

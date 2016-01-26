@@ -33,12 +33,15 @@ class psqlpipeline(object):
             haseditorialreview = str(item['haseditorialreview'])
             allowpreview = str(item['haseditorialreview'])
             description = item['description']
+            scrapedate = datetime.datetime.now()
             SQL = "INSERT INTO books (url,asin,kindle,hardcover,paperback,massmarketpaperback" \
-                  ",listprice,publisher,isbn10,isbn13,average,haseditorialreview,allowpreview,description" \
-                  ") VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+                  ",listprice,publisher,isbn10,isbn13,average,haseditorialreview,allowpreview,description,scrapedate" \
+                  ") VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
             data = (item['url'], item['asin'],kindle,hardcover,paperback,massmarketpaperback
-                    ,listprice,publisher,isbn10,isbn13,average,haseditorialreview,allowpreview,description)
+                    ,listprice,publisher,isbn10,isbn13,average,haseditorialreview,allowpreview,description,scrapedate)
             cur.execute (SQL,data)
+            SQL2 = "INSERT INTO booksrank (asin,alsoboughtasin,bestsellerrank,scrapedate) VALUES (%s,%s,%s,%s);"
+            data2 = (item['asin'],item['alsobought'],int(item['bestsellerrank']),scrapedate)
             conn.commit()
             return item
         elif (spider.name == "releases"):

@@ -4,6 +4,7 @@ import re
 import psycopg2
 
 from amazonbooks.items import Book
+from time import gmtime, strftime
 
 def strToFloat(strFloat):
         """
@@ -54,6 +55,12 @@ class AmazonSpider(scrapy.Spider):
 
         #Get asin from url
         item['asin'] = getasinfromurl(response.url)
+
+        #Save file to html
+        file_name = "bookpage:" + item['asin'] + " " + strftime("%Y-%m-%d %H:%M", gmtime())
+        with open('files/%s.html' % file_name, 'w+b') as f:
+            f.write(response.body)
+
         if "item has not been released" in response.body :
             item['ispreorder'] = "1"
         else :
