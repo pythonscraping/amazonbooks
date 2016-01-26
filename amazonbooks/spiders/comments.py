@@ -34,7 +34,7 @@ class ReleaseSpider(scrapy.Spider):
         #item['asin'] = str(filter(str.isdigit,asinregex))
         item['asin'] = getasinfromurl(str(response.url))
         pagecount = int(response.url.split("pageNumber=")[1])
-        file_name = item['asin'] + " " + strftime("%Y-%m-%d %H:%M", gmtime())
+        file_name = item['asin'] + " page:" + str(pagecount) + " " + strftime("%Y-%m-%d %H:%M", gmtime())
         with open('files/%s.html' % file_name, 'w+b') as f:
             f.write(response.body)
         mostcritical = response.xpath(".//h4[contains(.,'helpful critical')]/../../..//a[contains(@href,'customer-reviews')]/@href").extract()[0].encode("utf8")
