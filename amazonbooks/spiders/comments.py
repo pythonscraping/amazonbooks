@@ -120,8 +120,6 @@ class ReleaseSpider(scrapy.Spider):
             else:
                 item['HallOfFameReviewer'] = 0
 
-
-
             #Hepfulness of review
             try :
                 helpfulspan = reviewdiv.xpath(".//span[contains(.,'review helpful')]/text()").extract()[0].encode("utf8")
@@ -143,7 +141,7 @@ class ReleaseSpider(scrapy.Spider):
             item ['verified'] = verified
             yield item
 
-        try :
+        try:
             nextlink = "http://www.amazon.com" + response.xpath(".//li[contains(@class,'a-last')]/a/@href").extract()[0]
             print nextlink
             yield scrapy.Request(nextlink)

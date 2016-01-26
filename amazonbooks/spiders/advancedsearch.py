@@ -25,15 +25,11 @@ class ReleaseSpider(scrapy.Spider):
         item = LastRelease()
         a = response.xpath("//*[contains(@id,'result_')]")
         for b in a :
-            url  = b.xpath("./div/div/div/div[2]/div[1]/a/@href").extract()[0]
+            url = b.xpath("./div/div/div/div[2]/div[1]/a/@href").extract()[0]
             item['crawlDate'] = str(now)
             item['rank'] = b.xpath("./@id").extract()
             item['releaseDate'] = b.xpath("./div/div/div/div[2]/div[1]/span[3]/text()").extract()
             item['url'] = url
-            hs.write("\"" + str(url).encode('utf8') +"\""+"," + "\n")
             m = re.search('dp\/(.*)', str(url))
             item['ASIN'] = m.group(0)[3:]
-            fo = open( "html/" + m.group(0)[3:]+ " "+str(now.day)+"-"+str(now.month)+"-"+str(now.year)+ ".html", "w")
-            fo.write(response.body)
-            fo.close()
             yield item
