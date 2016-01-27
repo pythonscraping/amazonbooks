@@ -21,4 +21,7 @@ class ReviewerSpider(scrapy.Spider):
             helpfulvotes = int(filter(str.isdigit, ranking.split('Helpful')[1]))
         except:
             pass
-        print topranking,helpfulvotes
+        #number of reviews
+        numberdiv = response.xpath("//b[contains(.,'Customer')]/../text()")
+        reviewsnumber = int(filter(str.isdigit, numberdiv))
+        print topranking," ",helpfulvotes," ",reviewsnumber
