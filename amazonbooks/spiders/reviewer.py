@@ -1,6 +1,7 @@
 #Get All the links from the new releases page.
 import scrapy
 import psycopg2
+from time import gmtime, strftime
 
 def getrevieweridfromurl(url):
     return url.split("/member-reviews/")[1]
