@@ -8,15 +8,15 @@ def getrevieweridfromurl(url):
 class ReviewerSpider(scrapy.Spider):
     name = "reviewers"
     allowed_domains = ["amazon.com"]
-    conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
-    cur = conn.cursor()
-    cur.execute("""SELECT reviewerurl FROM reviewers""")
+    #conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
+    #cur = conn.cursor()
+    #cur.execute("""SELECT reviewerurl FROM reviewers""")
     temp = []
     rows = cur.fetchall()
     for row in rows:
         temp.append("http://www.amazon.com/gp/cdp/member-reviews/" + row[0].split("/profile/")[1])
-        cur.execute("""UPDATE reviewers SET reviewerid = %s  WHERE reviewerurl = %s;""",(row[0].split("/profile/")[1].strip(),row[0]))
-        conn.commit()
+        #cur.execute("""UPDATE reviewers SET reviewerid = %s  WHERE reviewerurl = %s;""",(row[0].split("/profile/")[1].strip(),row[0]))
+        #conn.commit()
     start_urls = temp
     def parse(self, response):
         #item = HotRelease()
@@ -35,6 +35,10 @@ class ReviewerSpider(scrapy.Spider):
         reviewsnumber = int(filter(str.isdigit, numberdiv))
         reviewerid = getrevieweridfromurl(response.url)
         print topranking," ",helpfulvotes," ",reviewsnumber," ", response.url
-        #conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
-        #cur = conn.cursor()
-        #SQL = "UPDATE reviewers SET topranking = %s, helpfulvotes = %s, reviewsnumber = %s, reviewerid = %s  WHERE revi"
+        conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
+        cur = conn.cursor()
+        SQL = "UPDATE reviewers SET topranking = %s, helpfulvotes = %s, reviewsnumber = %s " \
+              "WHERE reviewerid = %s"
+        data = (topranking,helpfulvotes,reviewsnumber,reviewerid)
+        cur.execute(SQL,data)
+        conn.commit()
