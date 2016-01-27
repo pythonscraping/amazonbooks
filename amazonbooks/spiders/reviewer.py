@@ -20,6 +20,7 @@ class ReviewerSpider(scrapy.Spider):
     start_urls = temp
     def parse(self, response):
         #item = HotRelease()
+
         div = response.xpath("//div[contains(@class,'tiny') and contains(.,'Top')]//text()")
         ranking = "".join(div.extract()).encode("utf-8")
         try :
@@ -34,6 +35,9 @@ class ReviewerSpider(scrapy.Spider):
             pass
         reviewsnumber = int(filter(str.isdigit, numberdiv))
         reviewerid = getrevieweridfromurl(response.url)
+        file_name = "reviewer:" + reviewerid + " " + strftime("%Y-%m-%d %H:%M", gmtime())
+        with open('files/%s.html' % file_name, 'w+b') as f:
+            f.write(response.body)
         print topranking," ",helpfulvotes," ",reviewsnumber," ", response.url
         conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
         cur = conn.cursor()
