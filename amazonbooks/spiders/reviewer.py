@@ -15,7 +15,7 @@ class ReviewerSpider(scrapy.Spider):
     rows = cur.fetchall()
     for row in rows:
         temp.append("http://www.amazon.com/gp/cdp/member-reviews/" + row[0].split("/profile/")[1])
-        cur.execute("""UPDATE reviewers SET reviewerid = %s  WHERE reviewerurl = %s)""",(row[0].split("/profile/")[1].strip(),row[0]))
+        cur.execute("""UPDATE reviewers SET reviewerid = %s  WHERE reviewerurl = %s;""",(row[0].split("/profile/")[1].strip(),row[0]))
         conn.commit()
     start_urls = temp
     def parse(self, response):
