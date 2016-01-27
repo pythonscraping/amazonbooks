@@ -15,7 +15,7 @@ SPIDER_MODULES = ['amazonbooks.spiders']
 NEWSPIDER_MODULE = 'amazonbooks.spiders'
 
 ITEM_PIPELINES = {
-    'amazonbooks.pipelines.psqlpipeline': 300,
+    #'amazonbooks.pipelines.psqlpipeline': 300,
 }
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'amazonbooks (+http://www.yourdomain.com)'
