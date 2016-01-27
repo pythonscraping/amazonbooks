@@ -14,7 +14,7 @@ class ReviewerSpider(scrapy.Spider):
     ]
     def parse(self, response):
         #item = HotRelease()
-        div = response.xpath("//div[contains(@class,'tiny') and contains(.,'Top')]//text()"
+        div = response.xpath("//div[contains(@class,'tiny') and contains(.,'Top')]//text()")
         ranking = "".join(div.extract()).encode("utf-8")
         try :
             topranking = int(filter(str.isdigit, ranking.split('Helpful')[0]))
