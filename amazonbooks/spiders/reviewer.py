@@ -8,9 +8,9 @@ def getrevieweridfromurl(url):
 class ReviewerSpider(scrapy.Spider):
     name = "reviewers"
     allowed_domains = ["amazon.com"]
-    #conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
-    #cur = conn.cursor()
-    #cur.execute("""SELECT reviewerurl FROM reviewers""")
+    conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
+    cur = conn.cursor()
+    cur.execute("""SELECT reviewerurl FROM reviewers""")
     temp = []
     rows = cur.fetchall()
     for row in rows:
