@@ -15,7 +15,9 @@ top100 boolean,
 top500 boolean,
 top1000 boolean,
 halloffame boolean,
-
+topranking int,
+helpfulvotes int,
+reviewsnumber int,
 scrapedate DATE
 );""")
 conn.commit()
