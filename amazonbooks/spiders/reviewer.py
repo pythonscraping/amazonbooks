@@ -11,7 +11,7 @@ class ReviewerSpider(scrapy.Spider):
     allowed_domains = ["amazon.com"]
     conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
     cur = conn.cursor()
-    cur.execute("""SELECT reviewerurl FROM reviewers""")
+    cur.execute("""SELECT reviewerurl FROM reviewers WHERE scrapedate=%s""",('2016-01-27',))
     temp = []
     rows = cur.fetchall()
     for row in rows:
@@ -43,7 +43,7 @@ class ReviewerSpider(scrapy.Spider):
         conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
         cur = conn.cursor()
         SQL = "UPDATE reviewers SET topranking = %s, helpfulvotes = %s, reviewsnumber = %s " \
-              "WHERE reviewerid = %s"
-        data = (topranking,helpfulvotes,reviewsnumber,reviewerid)
+              "WHERE reviewerid = %s AND scrapedate=%s"
+        data = (topranking,helpfulvotes,reviewsnumber,reviewerid,'2016-01-27')
         cur.execute(SQL,data)
         conn.commit()
