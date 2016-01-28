@@ -4,14 +4,14 @@ import psycopg2
 from time import gmtime, strftime
 
 def getrevieweridfromurl(url):
-    return url.split("/member-reviews/")[1]
+    return url.split("/member-reviews/")[1].split("/")[0]
 
 class ReviewerSpider(scrapy.Spider):
     name = "reviewers"
     allowed_domains = ["amazon.com"]
     conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
     cur = conn.cursor()
-    cur.execute("""SELECT reviewerurl FROM reviewers WHERE scrapedate=%s""",('2016-01-27',))
+    cur.execute("""SELECT reviewerurl FROM reviewers WHERE scrapedate=%s""",('2016-01-28',))
     temp = []
     rows = cur.fetchall()
     for row in rows:
@@ -44,6 +44,6 @@ class ReviewerSpider(scrapy.Spider):
         cur = conn.cursor()
         SQL = "UPDATE reviewers SET topranking = %s, helpfulvotes = %s, reviewsnumber = %s " \
               "WHERE reviewerid = %s AND scrapedate=%s"
-        data = (topranking,helpfulvotes,reviewsnumber,reviewerid,'2016-01-27')
+        data = (topranking,helpfulvotes,reviewsnumber,reviewerid,'2016-01-28')
         cur.execute(SQL,data)
         conn.commit()
