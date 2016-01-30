@@ -49,6 +49,6 @@ class ReviewerSpider(scrapy.Spider):
         cur = conn.cursor()
         SQL = "UPDATE reviewers SET topranking = %s, helpfulvotes = %s, reviewsnumber = %s " \
               "WHERE reviewerid = %s AND scrapedate=%s"
-        data = (topranking,helpfulvotes,reviewsnumber,reviewerid,'2016-01-28')
+        data = (topranking,helpfulvotes,reviewsnumber,reviewerid,'2016-01-29')
         cur.execute(SQL,data)
         conn.commit()
