@@ -11,7 +11,7 @@ class ReviewerSpider(scrapy.Spider):
     allowed_domains = ["amazon.com"]
     conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
     cur = conn.cursor()
-    cur.execute("""SELECT reviewerurl FROM reviewers WHERE scrapedate=%s""",('2016-01-28',))
+    cur.execute("""SELECT reviewerurl FROM reviewers WHERE scrapedate=%s""",('2016-01-29',))
     temp = []
     rows = cur.fetchall()
     for row in rows:
