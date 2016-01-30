@@ -40,6 +40,11 @@ class ReviewerSpider(scrapy.Spider):
         with open('files/%s.html' % file_name, 'w+b') as f:
             f.write(response.body)
         print topranking," ",helpfulvotes," ",reviewsnumber," ", response.url
+        #If top Ranking does not exist
+        if 'topranking' in vars() :
+            pass
+        else:
+            topranking = -1
         conn = psycopg2.connect("dbname=amazon user=amazon password=amazon host=127.0.0.1")
         cur = conn.cursor()
         SQL = "UPDATE reviewers SET topranking = %s, helpfulvotes = %s, reviewsnumber = %s " \
