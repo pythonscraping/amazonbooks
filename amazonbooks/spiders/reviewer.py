@@ -39,7 +39,7 @@ class ReviewerSpider(scrapy.Spider):
         file_name = "reviewer:" + reviewerid + " " + strftime("%Y-%m-%d %H:%M", gmtime())
         with open('files/%s.html' % file_name, 'w+b') as f:
             f.write(response.body)
-        print topranking," ",helpfulvotes," ",reviewsnumber," ", response.url
+        print topranking," ",helpfulvotes," ",reviewsnumber," ", response.url, "reviewerid"
         #If top Ranking does not exist
         if 'topranking' in vars() :
             pass
