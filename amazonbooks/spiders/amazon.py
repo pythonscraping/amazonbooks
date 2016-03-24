@@ -51,6 +51,11 @@ class AmazonSpider(scrapy.Spider):
     def parse(self, response):
 
         item = Book()
+        if "not a robot" in response.body :
+            print "detected " + response.url
+            time.sleep(10)
+            with open("detectedbooks.txt", "a") as myfile:
+                myfile.write(response.url + "\n")
         item['url'] = response.url
 
         #Get asin from url

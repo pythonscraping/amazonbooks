@@ -85,7 +85,7 @@ class psqlpipeline(object):
                 data2 = (item['asin'],item['mostcritical'],scrapedate,item['asin'])
                 cur.execute (SQL2,data2)
             conn.commit()
-            return item
+            #return item
 
         else:
             return item

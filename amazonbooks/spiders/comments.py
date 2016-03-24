@@ -3,6 +3,7 @@ import scrapy
 from amazonbooks.items import Review
 import psycopg2
 from time import gmtime, strftime
+import time
 
 def getasinfromurl(url):
     return url.split("/product-reviews/")[1].split("/")[0].split("?")[0]
@@ -28,7 +29,11 @@ class ReleaseSpider(scrapy.Spider):
 
     def parse(self, response):
         item = Review()
-
+        if "not a robot" in response.body :
+            print "detected " + response.url
+            time.sleep(10)
+            with open("detected.txt", "a") as myfile:
+                myfile.write(response.url + "\n")
         #Get asin from url
         #asinregex = re.search("/([a-zA-Z0-9]{10})(?:[/?]|$)",str(response.url)).group(0)
         #item['asin'] = str(filter(str.isdigit,asinregex))
@@ -127,7 +132,7 @@ class ReleaseSpider(scrapy.Spider):
                 total = helpfulspan.split("of")[1].split("people")[0].strip()
                 item['helpful'] = int(filter(str.isdigit,helpful))
                 item['total'] = int(filter(str.isdigit,total))
-            except IndexError:
+            except (IndexError,ValueError):
                 item['helpful'] = 0
                 item['total'] = 0
             if 'helpful' not in item :
